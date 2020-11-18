@@ -11,6 +11,8 @@ flask-sqlalchemy = "*"
 python-decouple = "*"
 web3 = "*"
 keyboard = "*"
+flask-wtf = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.8"
