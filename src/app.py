@@ -23,7 +23,13 @@ def create_app():
     def metamask_setup():
         pass
 
+    @app.route('/no-more-users')
+    def no_more_users():
+        return render_template('no_more_users.html')
 
+    @app.route('/profile')
+    def profile():
+        return render_template('profile_editor.html')
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -31,7 +37,7 @@ def create_app():
         if form.validate_on_submit():
             user = form.username.data
             flash(f'Hi {user}!')
-            return redirect('/', user=user)
+            return redirect('/')
         return render_template('login.html', title='Sign In', form=form)
 
     @app.route('/create')
