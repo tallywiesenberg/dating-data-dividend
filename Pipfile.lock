@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "61e16d3b3b113badcdb58f11f0713402c6d26561aac1b42c634e24c9dee80290"
+            "sha256": "316a439226d27f678fad5178827dd0dc333f93486e716be1b67d3289d41c03e8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -45,6 +45,14 @@
                 "sha256:27a69ffcee3b868abab3ce8b17c69e02b63e722d4d64ffd91d659f81e9984954"
             ],
             "version": "==1.2.2"
+        },
+        "brython": {
+            "hashes": [
+                "sha256:2d745680e33f16c6d56fc99ec42b8da06a5d374d45fe1efaef46f3ddea7f8824",
+                "sha256:3b446973d4708faf29d190b944791082d2078e167cff6431ab39c566d1e29bc7"
+            ],
+            "index": "pypi",
+            "version": "==3.9.0"
         },
         "certifi": {
             "hashes": [
@@ -217,14 +225,6 @@
                 "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"
             ],
             "version": "==3.2.0"
-        },
-        "keyboard": {
-            "hashes": [
-                "sha256:63ed83305955939ca5c9a73755e5cc43e8242263f5ad5fd3bb7e0b032f3d308b",
-                "sha256:8e9c2422f1217e0bd84489b9ecd361027cc78415828f4fe4f88dd4acd587947b"
-            ],
-            "index": "pypi",
-            "version": "==0.13.5"
         },
         "lru-dict": {
             "hashes": [

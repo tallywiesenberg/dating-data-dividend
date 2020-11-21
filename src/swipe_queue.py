@@ -2,16 +2,16 @@ import datetime
 import random
 
 from flask import render_template, redirect, flash
-import keyboard
 
-from model import db, UserData, UserLogin, Swipe
+from .model import db, UserData, UserLogin, Swipe
 
 class SwipeQueue:
     
-    def __init__(self, user, queue):
+    def __init__(self, user):
         self.user = user
         self.queue = UserLogin.query.all().remove(user)
 
+    # TODO might need to move this to a different worker
     def add_user_to_queue(self, user):
         random.shuffle(self.queue)
         self.queue.append(user)
@@ -34,8 +34,8 @@ class SwipeQueue:
             #   append to swipe database
                 swipe = Swipe(timestamp = datetime.datetime.now(),
                             decision = False,
-                            front_user = self.user,
-                            back_user = next_user,
+                            front_user = self.user.username,
+                            back_user = next_user.username,
                             match = False)
                 db.session.add(swipe)
                 db.session.commit()

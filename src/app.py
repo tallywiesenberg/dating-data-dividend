@@ -5,6 +5,7 @@ from decouple import config
 
 from .login import LoginForm
 from .model import UserData, UserLogin, Swipe, db
+from .swipe_queue import SwipeQueue
 
 def create_app():
     app = Flask(__name__)
@@ -16,8 +17,16 @@ def create_app():
 
     @app.route('/')
     def home():
-        user = {'username': 'Becky'}
-        return render_template('home.html', user=user)
+        user = UserLogin(username='Tally', password='test', address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c')
+        db.session.add(user)
+        db.session.commit()
+        render_template('home.html', user=user)
+        sq = SwipeQueue(user)
+        return sq.swipe()
+
+    @app.route('/swipe')
+    def swipe():
+        return render_template('swipe.html')
 
     @app.route('/metamask-setup')
     def metamask_setup():
