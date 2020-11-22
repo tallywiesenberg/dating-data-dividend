@@ -71,3 +71,7 @@ def unauthorized():
     """Redirect unauthorized users to Login page."""
     flash('You must be logged in to view that page.')
     return redirect(url_for('auth_bp.login'))
+
+@auth_bp.route('/')
+def redirect_to_home():
+    return redirect(url_for('auth.bp_login'))
