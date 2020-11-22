@@ -20,6 +20,10 @@ class UserLogin(db.Model):
     def check_password(self, password):
       return check_password_hash(self.password, password)
 
+    def set_address(self, address):
+      '''Set address from placeholder to real-deal after connecting with metamask'''
+      self.address = address
+
 class UserData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=True)
