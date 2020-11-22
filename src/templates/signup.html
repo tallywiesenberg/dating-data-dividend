@@ -28,7 +28,7 @@
         {% endif %}
       </fieldset>
 
-      <fieldset class="email">
+      <!-- <fieldset class="email">
         {{ form.email.label }}
         {{ form.email(placeholder='youremail@example.com') }}
         {% if form.email.errors %}
@@ -37,7 +37,7 @@
               <li>{{ error }}</li>{% endfor %}
           </ul>
         {% endif %}
-      </fieldset>
+      </fieldset> -->
 
       <fieldset class="password">
         {{ form.password.label }}
@@ -61,10 +61,10 @@
         {% endif %}
       </fieldset>
 
-      <fieldset class="website">
+      <!-- <fieldset class="website">
         {{ form.website.label }}
         {{ form.website(placeholder='http://example.com') }}
-      </fieldset>
+      </fieldset> -->
 
       <div class="submit-button">
         {{ form.submit }}

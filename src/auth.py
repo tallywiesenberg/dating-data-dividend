@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, render_template, redirect, jsonify, url_for
-from flask_login import login_required, logout_user, current_user, login_user, login_manager
+from flask_login import login_required, logout_user, current_user, login_user
 
-from .extensions import db
+from .extensions import db, login_manager
 from .login import SignUpForm, LoginForm
 from .tables import UserLogin
 
@@ -49,7 +49,7 @@ def login():
     if form.validate_on_submit():
         user = UserLogin.query.filter_by(username=form.username.data)
         if user and user.check_password(password=form.password.data):
-            login_user(user)
+            login_user(user, remember=form.remember_me.data)
 
 
         flash(f"Sorry...that username/password combination wasn't valid")
@@ -62,7 +62,7 @@ def login():
 def load_user(user_id):
     """Check if user is logged-in on every page load."""
     if user_id is not None:
-        return User.query.get(user_id)
+        return UserLogin.query.get(user_id)
     return None
 
 
