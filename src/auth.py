@@ -74,4 +74,4 @@ def unauthorized():
 
 @auth_bp.route('/')
 def redirect_to_home():
-    return redirect(url_for('auth.bp_login'))
+    return redirect(url_for('auth_bp.login'))
