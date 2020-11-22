@@ -3,7 +3,7 @@ import random
 
 from flask import render_template, redirect, flash
 
-from .model import db, UserData, UserLogin, Swipe
+from .tables import UserData, UserLogin, Swipe
 
 class SwipeQueue:
     

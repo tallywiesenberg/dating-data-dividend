@@ -1,32 +1,32 @@
-from flask import Flask, flash, render_template, redirect
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, flash, render_template, redirect, jsonify
 from decouple import config
 
+from .extensions import db, login_manager, ma, migrate
 from .login import LoginForm
-from .model import UserData, UserLogin, Swipe, db
+from .tables import UserData, UserLogin, Swipe, db
+from .schema import UserLoginSchema, UserDataSchema, Swipe
 from .swipe_queue import SwipeQueue
 
 def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
     app.config['SECRET_KEY'] = config('SECRET_KEY')
-    db.init_app(app)
 
-    migrate = Migrate(db)
+    #Intialize plugins/extensions
+    db.init_app(app)
+    ma.init_app(app)
+    migrate.init_app(db)
+    login_manager.init_app(app)
 
     @app.route('/')
     def home():
-        user = UserLogin(username='Tally', password='test', address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c')
-        db.session.add(user)
-        db.session.commit()
-        render_template('home.html', user=user)
-        sq = SwipeQueue(user)
-        return sq.swipe()
+        return render_template('home.html')
 
     @app.route('/swipe')
     def swipe():
-        return render_template('swipe.html')
+        user_login_schema = UserLoginSchema(many=True)
+        users = UserLogin.query.all()
+        return jsonify(user_login_schema.dump(users))
 
     @app.route('/metamask-setup')
     def metamask_setup():
@@ -40,19 +40,13 @@ def create_app():
     def profile():
         return render_template('profile_editor.html')
 
-    @app.route('/login', methods=['GET', 'POST'])
-    def login():
-        form = LoginForm()
-        if form.validate_on_submit():
-            user = form.username.data
-            flash(f'Hi {user}!')
-            return redirect('/')
-        return render_template('login.html', title='Sign In', form=form)
-
     @app.route('/create')
     def create_db():
         db.drop_all()
         db.create_all()
+        user = UserLogin(username='Tally', password='test', address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c')
+        db.session.add(user)
+        db.session.commit()
         return 'DB created!'
 
     return app

@@ -12,7 +12,9 @@ python-decouple = "*"
 web3 = "*"
 flask-wtf = "*"
 flask-migrate = "*"
-brython = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.8"

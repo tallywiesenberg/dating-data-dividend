@@ -6,11 +6,28 @@
     <title>Home page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script type="text/javascript" src="brython.js"></script>
-`   <script type="text/javascript" src="brython_stdlib.js"></script>
 </head>
 <body>
-    <script type="text/python3" src="../swipe_queue.py"></script>
+    <div id="content"></div>
+    <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <script type="text/jsx">
+
+        /*** @jsx React.DOM */
+      
+        var realPython = React.createClass({
+          render: function() {
+            return (<h2>Greetings, from Real Python!</h2>);
+          }
+        });
+      
+        ReactDOM.render(
+          React.createElement(realPython, null),
+          document.getElementById('content')
+        );
+      
+      </script>
         <div>
         {% if user is defined %}   
             <h1>Hey welcome, {{ user.username }}! </h1>
