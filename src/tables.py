@@ -26,12 +26,11 @@ class UserLogin(db.Model):
 
 class UserData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer, nullable=True)
-    left_swipes = db.Column(db.Integer, nullable=False)
-    right_swipes = db.Column(db.Integer, nullable=False)
+    left_swipes_given = db.Column(db.Integer, nullable=False)
+    right_swipes_given = db.Column(db.Integer, nullable=False)
     matches = db.Column(db.Integer, nullable=False)
     bio = db.Column(db.String(240))
-    photos = db.Column(db.PickleType, nullable=False)
+    path_to_photos = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.String(44),
     #  db.ForeignKey('user_login.id'),
       nullable=False)

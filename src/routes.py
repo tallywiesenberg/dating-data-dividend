@@ -12,11 +12,16 @@ main_bp = Blueprint(
     static_folder='static'
 )
 
-
 @main_bp.route('/home')
 @login_required
 def home():
     return render_template('home.html')
+
+@main_bp.route('/user/<username>')
+@login_required
+def user(username):
+    user = UserLogin.query.filter_by(username=username).first_or_404()
+    user_data = UserData.query.filter_by(user_id=user.id)
 
 @main_bp.route('/swipe')
 @login_required

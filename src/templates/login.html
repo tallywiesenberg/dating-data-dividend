@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Jane -- Log In</title>
+    <title>Jane -- Sign In</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <!-- <script src='main.js'></script> -->
@@ -29,4 +29,5 @@
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>
+    <p>New here? <a href="{{ url_for('auth_bp.register') }}">Click to Register!</a></p>
 {% endblock %}

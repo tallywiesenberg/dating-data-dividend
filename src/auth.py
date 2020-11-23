@@ -3,7 +3,7 @@ from flask_login import login_required, logout_user, current_user, login_user
 
 from .extensions import db, login_manager
 from .login import SignUpForm, LoginForm
-from .tables import UserLogin
+from .tables import UserLogin, UserData
 
 auth_bp = Blueprint(
     'auth_bp',
@@ -13,7 +13,7 @@ auth_bp = Blueprint(
 )
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
-def signup():
+def register():
     form = SignUpForm()   
     if form.validate_on_submit():
         #check if user exists in system already
@@ -24,10 +24,19 @@ def signup():
                 username = form.username.data,
                 address = 'pre-metamask'
             )
+            user_data = UserData(
+                left_swipes_given = 0,
+                right_swipes_given = 0,
+                matches = 0,
+                bio = '',
+                user_id = user.id,
+                path_to_photos = f'/user/{form.username.data}/'
+            )
             #Hash password for protection
             user.set_password(form.password.data)
             #Add new user to database
             db.session.add(user)
+            db.session.add(user_data)
             db.session.commit()
             #Login user
             login_user(user)
@@ -35,7 +44,7 @@ def signup():
             return redirect(url_for('main_bp.home'))
         flash('Shoot! That username already exists...')
 
-    return render_template('signup.html')
+    return render_template('register.html', form = form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
