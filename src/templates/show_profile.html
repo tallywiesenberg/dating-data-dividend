@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>{{user.username}}'s profile</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <!-- <script src='main.js'></script> -->
+</head>
+<body>
+    <div class="row">
+        <div class="column">
+            { % for path in child_paths}
+                <img src="{{ s3_photos.create_presigned_url(path) }}">
+        </div>
+        <div class="column">
+            <h1> {{ user.username}}'s profile </h1>
+            <h3> {{ user.bio }}</h3>    
+        </div>
+    </div>
+    </div>
+    
+</body>
+</html>

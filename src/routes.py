@@ -2,6 +2,7 @@ from flask import Blueprint, flash, render_template, redirect, jsonify, url_for
 from flask_login import login_required, current_user, logout_user
 
 from .login import LoginForm
+from .photos import Photos
 from .schema import UserLoginSchema, UserDataSchema, Swipe
 from .tables import UserData, UserLogin, Swipe, db
 
@@ -17,11 +18,21 @@ main_bp = Blueprint(
 def home():
     return render_template('home.html')
 
-@main_bp.route('/user/<username>')
+@main_bp.route('/user/<user_id>')
 @login_required
-def user(username):
-    user = UserLogin.query.filter_by(username=username).first_or_404()
-    user_data = UserData.query.filter_by(user_id=user.id)
+def user(user_id):
+    user = UserLogin.query.filter_by(id=user_id).first_or_404()
+    user_data = UserData.query.filter_by(user_id=user_id)
+    parent_path = user_data.path_to_photos
+    s3_photos = Photos(parent_path)
+    child_paths = s3_photos.get_paths_to_photos(user_id)
+    return render_template('show_profile.html', user=user, child_paths=child_paths)
+
+@main_bp.route('/user/<user_id>/edit')
+@login_required
+def edit_profile(user_id):
+
+    return render_template('edit_profile.html')
 
 @main_bp.route('/swipe')
 @login_required
@@ -31,16 +42,14 @@ def swipe():
     return jsonify(user_login_schema.dump(users))
 
 @main_bp.route('/metamask-setup')
+@login_required
 def metamask_setup():
     pass
 
 @main_bp.route('/no-more-users')
+@login_required
 def no_more_users():
     return render_template('no_more_users.html')
-
-@main_bp.route('/profile')
-def profile():
-    return render_template('profile_editor.html')
 
 @main_bp.route('/create')
 def create_db():
