@@ -6,13 +6,13 @@ from decouple import config
 import requests
 
 ACCESS_KEY = config('AWS_ACCESS_KEY')
-SECRET_KEY = config('oOvSNsUjQ7fdo/NcFJi3WIEfWGXqV/Zm5W1X3XfD')
+SECRET_KEY = config('AWS_SECRET_KEY')
 
 class Photos:
 
     def __init__(self, path_to_photos_parent):
         self.path_to_photos_parent = path_to_photos_parent
-        self.bucket = 'jane-protocol'
+        self.bucket = config('BUCKET_NAME')
         self.access_key = ACCESS_KEY
         self.secret_key = SECRET_KEY
         self.client = boto3.client(
