@@ -1,5 +1,6 @@
-from flask import Blueprint, flash, render_template, redirect, jsonify, url_for
+from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string
 from flask_login import login_required, logout_user, current_user, login_user
+import requests
 
 from .extensions import db, login_manager
 from .login import SignUpForm, LoginForm
@@ -44,7 +45,8 @@ def register():
             return redirect(url_for('main_bp.home'))
         flash('Shoot! That username already exists...')
 
-    return render_template('register.html', form = form)
+    # return render_template('register.html', form = form)
+    return render_template_string(render_s3_template('register.html'), form=form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,7 +67,8 @@ def login():
 
         return redirect(url_for('main_bp.home'))
 
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template_string(render_s3_template('login.html'), title='Sign In', form=form)
+    # return render_template('login.html', title='Sign In', form=form)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -84,3 +87,24 @@ def unauthorized():
 @auth_bp.route('/')
 def redirect_to_home():
     return redirect(url_for('auth_bp.login'))
+
+def render_s3_template(html_file_name):
+    '''
+    Read jinja template from s3.
+    Params:
+    html_file_name (str): Pre-S3 name of template
+
+    Returns:
+    template_str (str): Html template in string
+    '''
+    # s3 = boto3.resource(
+    #     's3',
+    #     aws_access_key=config('AWS_ACCESS_KEY'),
+    #     aws_secret_access_key=config('AWS_SECRET_KEY')
+    #     )
+    # obj = s3.Object(config('BUCKET_NAME'))
+    # template_string = obj.get()['templates'][html_file_name].read().decode('utf-8')
+    # return template_string
+
+    r = requests.get(f'https://jane-protocol.s3.amazonaws.com/templates/{html_file_name}')
+    return r.text
