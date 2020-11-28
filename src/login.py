@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
@@ -19,3 +20,9 @@ class SignUpForm(FlaskForm):
         DataRequired(), EqualTo('password', message='passwords must match. doublecheck your spelling!')
         ])
     submit = SubmitField('Register :)')
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    bio = StringField('My bio', validators=[Length(max=240)])
+    photos = FileField('Upload photos')
+    submit = SubmitField('submit!')

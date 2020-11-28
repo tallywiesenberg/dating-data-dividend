@@ -1,11 +1,14 @@
+import json
+
 import boto3
 from decouple import config
 from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string
 from flask_login import login_required, current_user, logout_user
+import pandas as pd
 import requests
 
 from .auth import render_s3_template
-from .login import LoginForm
+from .login import LoginForm, EditProfileForm
 from .photos import Photos
 from .schema import UserLoginSchema, UserDataSchema, Swipe
 from .tables import UserData, UserLogin, Swipe, db
@@ -20,8 +23,8 @@ main_bp = Blueprint(
 @main_bp.route('/home')
 @login_required
 def home():
-    # return render_template('home.html')
-    return render_template_string(render_s3_template('home.html'))
+    return render_template('home.html')
+    # return render_template_string(render_s3_template('home.html'))
 
 @main_bp.route('/user/<user_id>')
 @login_required
@@ -34,9 +37,17 @@ def user(user_id):
     # return render_template('show_profile.html', user=user, child_paths=child_paths)
     return render_template_string('show_profile.html', user=user, child_paths=child_paths)
 
-@main_bp.route('/user/<user_id>/edit')
+@main_bp.route('/user/<user_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile(user_id):
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.data.username
+        current_user.username = form.data.bio
+        db.session.commit()
+        #TODO update photo bucket on S3
+        flash('Cool...your changs have been saved!')
+        return redirect(url_for('main_bp.user'))
 
     # return render_template('edit_profile.html')
     return render_template_string(render_s3_template('edit_profile.html'))
@@ -59,12 +70,19 @@ def no_more_users():
     # return render_template('no_more_users.html')
     return render_template_string(render_s3_template('no_more_users.html'))
 
-@main_bp.route('/create')
+@main_bp.route('/reset')
 def create_db():
     db.drop_all()
     db.create_all()
-    user = UserLogin(username='Tally', password='test', address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c')
-    db.session.add(user)
+    users = [UserLogin(username='Tally', password='test', address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c')]
+    with open('MOCK_DATA.json') as f:
+        data = json.loads(f.read())
+    for i in data:
+        user = UserLogin(username=i['username'], password=i['password'], address=i['address'])
+        users.append(user)
+    for user in users:
+        user.set_password(user.password)
+    db.session.add_all(users)
     db.session.commit()
     return 'DB created!'
 

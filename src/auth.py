@@ -58,23 +58,27 @@ def login():
     form = LoginForm()
     #Attempt to validate login attempt
     if form.validate_on_submit():
-        user = UserLogin.query.filter_by(username=form.username.data)
+        flash('Login requested for user {}, remember_me={}'.format(
+            form.username.data, form.remember_me.data))
+        user = UserLogin.query.filter_by(username=form.username.data).first()
         if user and user.check_password(password=form.password.data):
+            
             login_user(user, remember=form.remember_me.data)
+
+            return redirect(url_for('main_bp.home'))
 
 
         flash(f"Sorry...that username/password combination wasn't valid")
 
-        return redirect(url_for('main_bp.home'))
 
-    return render_template_string(render_s3_template('login.html'), title='Sign In', form=form)
-    # return render_template('login.html', title='Sign In', form=form)
+    # return render_template_string(render_s3_template('login.html'), title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', form=form)
 
 @login_manager.user_loader
 def load_user(user_id):
     """Check if user is logged-in on every page load."""
     if user_id is not None:
-        return UserLogin.query.get(user_id)
+        return UserLogin.query.get(int(user_id))
     return None
 
 

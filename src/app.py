@@ -9,6 +9,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
     app.config['SECRET_KEY'] = config('SECRET_KEY')
+    app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 
     #Intialize plugins/extensions
     db.init_app(app)

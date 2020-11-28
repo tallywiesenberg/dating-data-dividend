@@ -17,6 +17,8 @@ marshmallow-sqlalchemy = "*"
 flask-login = "*"
 boto3 = "*"
 requests = "*"
+keyboard = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.8"
