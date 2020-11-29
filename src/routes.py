@@ -26,18 +26,18 @@ def home():
     return render_template('home.html')
     # return render_template_string(render_s3_template('home.html'))
 
-@main_bp.route('/user/<user_id>')
+@main_bp.route('/user/<username>')
 @login_required
 def user(user_id):
-    user = UserLogin.query.filter_by(id=user_id).first_or_404()
-    user_data = UserData.query.filter_by(user_id=user_id)
+    user = UserLogin.query.filter_by(username=username).first_or_404()
+    user_data = UserData.query.filter_by(user_id=user.id)
     parent_path = user_data.path_to_photos
     s3_photos = Photos(parent_path)
     child_paths = s3_photos.get_paths_to_photos(user_id)
     # return render_template('show_profile.html', user=user, child_paths=child_paths)
     return render_template_string('show_profile.html', user=user, child_paths=child_paths)
 
-@main_bp.route('/user/<user_id>/edit', methods=['GET', 'POST'])
+@main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile(user_id):
     form = EditProfileForm()
