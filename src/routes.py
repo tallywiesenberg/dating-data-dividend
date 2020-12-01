@@ -2,7 +2,7 @@ import json
 
 import boto3
 from decouple import config
-from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string
+from flask import Blueprint, flash, render_template, redirect, request, jsonify, url_for, render_template_string
 from flask_login import login_required, current_user, logout_user
 import pandas as pd
 import requests
@@ -28,29 +28,35 @@ def home():
 
 @main_bp.route('/user/<username>')
 @login_required
-def user(user_id):
+def user(username):
     user = UserLogin.query.filter_by(username=username).first_or_404()
     user_data = UserData.query.filter_by(user_id=user.id)
-    parent_path = user_data.path_to_photos
-    s3_photos = Photos(parent_path)
-    child_paths = s3_photos.get_paths_to_photos(user_id)
-    # return render_template('show_profile.html', user=user, child_paths=child_paths)
-    return render_template_string('show_profile.html', user=user, child_paths=child_paths)
+    s3_photos = Photos(username)
+    child_paths = s3_photos.get_paths_to_photos(username)
+    return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos = s3_photos)
+    # return render_template_string('show_profile.html', user=user, child_paths=child_paths)
 
 @main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_profile(user_id):
+def edit_profile(username):
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.data.username
-        current_user.username = form.data.bio
+        current_user.bio = form.data.bio
         db.session.commit()
         #TODO update photo bucket on S3
-        flash('Cool...your changs have been saved!')
+        for uploaded_file in request.files.getlist('file')
+            if uploaded_file.filename != '':
+                photos = Photos(username)
+                photos.upload_to_s3(uploaded_file)
+        flash('Cool...your changes have been saved!')
         return redirect(url_for('main_bp.user'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.bio.data = current_user.bio
 
-    # return render_template('edit_profile.html')
-    return render_template_string(render_s3_template('edit_profile.html'))
+    return render_template('edit_profile.html', form=form)
+    # return render_template_string(render_s3_template('edit_profile.html'))
 
 @main_bp.route('/swipe')
 @login_required
