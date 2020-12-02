@@ -1,9 +1,9 @@
 from .extensions import ma
 from .tables import *
 
-class UserLoginSchema(ma.SQLAlchemySchema):
+class UserSchema(ma.SQLAlchemySchema):
   class Meta:
-    model = UserLogin
+    model = User
 
   id = ma.auto_field()
   username = ma.auto_field()
@@ -11,9 +11,9 @@ class UserLoginSchema(ma.SQLAlchemySchema):
   address = ma.auto_field()
 
 
-class UserDataSchema(ma.SQLAlchemyAutoSchema):
-  class Meta:
-    model = UserData
+# class UserDataSchema(ma.SQLAlchemyAutoSchema):
+#   class Meta:
+#     model = UserData
 
 class SwipeSchema(ma.SQLAlchemyAutoSchema):
   class Meta:

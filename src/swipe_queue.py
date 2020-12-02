@@ -3,13 +3,13 @@ import random
 
 from flask import render_template, redirect, flash
 
-from .tables import UserData, UserLogin, Swipe
+from .tables import User, Swipe, db
 
 class SwipeQueue:
     
     def __init__(self, user):
         self.user = user
-        self.queue = UserLogin.query.all().remove(user)
+        self.queue = User.query.all().remove(user)
 
     # TODO might need to move this to a different worker
     def add_user_to_queue(self, user):
@@ -70,15 +70,15 @@ class SwipeQueue:
                             front_user = self.user,
                             back_user = next_user.username,
                             match = True)
-                    #increment match total in UserData db
-                    front_user = (UserData.query.join(UserData.user_login)
-                        .filter_by(UserLogin.username==self.user.username)
+                    #increment match total in User db
+                    front_user = self.user
+                    back_user = (User.query
+                        .filter_by(User.username==next_user.username)
                         .first())
-                    back_user = (UserData.query.join(UserData.user_login)
-                        .filter_by(UserLogin.username==next_user.username)
-                        .first())
-                    front_user.matches += 1 
+                    front_user.matches += 1
+                    front_user.right_swipes +=1 
                     back_user.matches += 1
+                    back_user.right_swipes +=1
                     db.session.commit() 
         #   show next user
             self.swipe()

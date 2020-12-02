@@ -11,8 +11,9 @@
 <body>
     <div class="row">
         <div class="column">
-            { % for path in child_paths}
-                <img src="{{ s3_photos.create_presigned_url(path) }}">
+            {% for path in child_paths %}
+                <img src="{{ f'http://jane-protocol.s3-website-us-east-1.amazonaws.com/user/{username}/{path}' }}">
+            {% endfor %}
         </div>
         <div class="column">
             <h1> {{ user.username}}'s profile </h1>
@@ -20,6 +21,9 @@
         </div>
     </div>
     </div>
+<button onclick="window.location.href='{{ url_for('main_bp.edit_profile', username=user.username) }}';">
+    Edit profile!
+    </button>
     
 </body>
 </html>

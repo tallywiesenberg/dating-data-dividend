@@ -31,6 +31,7 @@
             {{ form.photos }}<br>
             {% for error in form.photos.errors %}
             <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.submit() }}

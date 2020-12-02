@@ -4,7 +4,7 @@ import requests
 
 from .extensions import db, login_manager
 from .login import SignUpForm, LoginForm
-from .tables import UserLogin, UserData
+from .tables import User
 
 auth_bp = Blueprint(
     'auth_bp',
@@ -18,26 +18,22 @@ def register():
     form = SignUpForm()   
     if form.validate_on_submit():
         #check if user exists in system already
-        existing_user = UserLogin.query.filter_by(username=form.username.data).first()
+        existing_user = User.query.filter_by(username=form.username.data).first()
         #if the user isn't there yet
         if existing_user is None:
-            user = UserLogin(
+            user = User(
                 username = form.username.data,
-                address = 'pre-metamask'
-            )
-            user_data = UserData(
+                address = 'pre-metamask',
                 left_swipes_given = 0,
                 right_swipes_given = 0,
                 matches = 0,
                 bio = '',
-                user_id = user.id,
-                path_to_photos = f'/user/{form.username.data}/'
+                time_logged = 0
             )
             #Hash password for protection
             user.set_password(form.password.data)
             #Add new user to database
             db.session.add(user)
-            db.session.add(user_data)
             db.session.commit()
             #Login user
             login_user(user)
@@ -60,7 +56,7 @@ def login():
     if form.validate_on_submit():
         flash('Login requested for user {}, remember_me={}'.format(
             form.username.data, form.remember_me.data))
-        user = UserLogin.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(password=form.password.data):
             
             login_user(user, remember=form.remember_me.data)
@@ -78,7 +74,7 @@ def login():
 def load_user(user_id):
     """Check if user is logged-in on every page load."""
     if user_id is not None:
-        return UserLogin.query.get(int(user_id))
+        return User.query.get(int(user_id))
     return None
 
 

@@ -3,13 +3,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .extensions import db
 
-class UserLogin(UserMixin, db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     address = db.Column(db.String(44), unique=True, nullable=False)
-    # data = db.relationship('UserData', backref='user_login')
-    # swipes = db.relationship('Swipe', backref='user_login', lazy=True)
+    left_swipes_given = db.Column(db.Integer, nullable=False)
+    right_swipes_given = db.Column(db.Integer, nullable=False)
+    matches = db.Column(db.Integer, nullable=False)
+    bio = db.Column(db.String(240))
+    time_logged = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return f'{self.id} -- {self.username} -- {self.password} -- {self.address}'
@@ -25,16 +28,16 @@ class UserLogin(UserMixin, db.Model):
       '''Set address from placeholder to real-deal after connecting with metamask'''
       self.address = address
 
-class UserData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    left_swipes_given = db.Column(db.Integer, nullable=False)
-    right_swipes_given = db.Column(db.Integer, nullable=False)
-    matches = db.Column(db.Integer, nullable=False)
-    bio = db.Column(db.String(240))
-    path_to_photos = db.Column(db.String(20), nullable=False)
-    user_id = db.Column(db.String(44),
-    #  db.ForeignKey('user_login.id'),
-      nullable=False)
+# class UserData(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     left_swipes_given = db.Column(db.Integer, nullable=False)
+#     right_swipes_given = db.Column(db.Integer, nullable=False)
+#     matches = db.Column(db.Integer, nullable=False)
+#     bio = db.Column(db.String(240))
+#     path_to_photos = db.Column(db.String(20), nullable=False)
+#     user_id = db.Column(db.String(44),
+#     #  db.ForeignKey('user_login.id'),
+#       nullable=False)
 
 class Swipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)

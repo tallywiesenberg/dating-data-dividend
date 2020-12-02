@@ -10,6 +10,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
     app.config['SECRET_KEY'] = config('SECRET_KEY')
     app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
+    app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 
     #Intialize plugins/extensions
     db.init_app(app)

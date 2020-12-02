@@ -18,7 +18,7 @@ class Photos:
         self.client = boto3.client('s3')
 
 
-    def upload_to_s3(self, local_file_name, bucket, s3_file_name=None):
+    def upload_to_s3(self, bucket, s3_file_name=None):
         '''
         :param local_file_name: File to upload
         :param bucket: Bucket to upload to
@@ -40,10 +40,10 @@ class Photos:
             print("Credentials not available")
             return False
 
-    def get_paths_to_photos(self, user_id):
+    def get_paths_to_photos(self, username):
         child_paths = self.client.list_objects_v2(
             Bucket = self.bucket,
-            Prefix = f'user/{user_id}/',
+            Prefix = f'user/{username}/',
             MaxKeys = 100,
         )
         return child_paths
