@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>{{user.username}}'s profile</title>
+    <title>{{ user.username }}'s profile</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <!-- <script src='main.js'></script> -->
@@ -12,7 +12,7 @@
     <div class="row">
         <div class="column">
             {% for path in child_paths %}
-                <img src="{{ f'http://jane-protocol.s3-website-us-east-1.amazonaws.com/user/{username}/{path}' }}">
+                <img href="http://jane-protocol.s3-website-us-east-1.amazonaws.com/user/{{ user.username }}/{{ path }}">
             {% endfor %}
         </div>
         <div class="column">
@@ -21,9 +21,11 @@
         </div>
     </div>
     </div>
-<button onclick="window.location.href='{{ url_for('main_bp.edit_profile', username=user.username) }}';">
-    Edit profile!
-    </button>
+    {% if user == current_user %}
+        <button onclick="window.location.href='{{ url_for('main_bp.edit_profile', username=user.username) }}';">
+            Edit profile!
+        </button>
+    {% endif %}
     
 </body>
 </html>

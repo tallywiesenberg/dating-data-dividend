@@ -33,7 +33,7 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     s3_photos = Photos(username)
     child_paths = s3_photos.get_paths_to_photos(username)
-    return render_template('show_profile.html', username=username, child_paths=child_paths, s3_photos = s3_photos)
+    return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos=s3_photos)
     # return render_template_string('show_profile.html', user=user, child_paths=child_paths)
 
 @main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
@@ -47,7 +47,9 @@ def edit_profile(username):
         #TODO update photo bucket on S3
         for uploaded_file in request.files.getlist('file'):
             if uploaded_file.filename != '':
-
+                file_ext = os.path.splitext(uploaded_file.filename)[1]
+                # if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                #     return "Unfortnately, that image wasn't valid :(", 400
                 photos = Photos(username)
                 photos.upload_to_s3(uploaded_file)
         flash('Cool...your changes have been saved!')
@@ -118,3 +120,7 @@ def logout():
     '''user logout logic'''
     logout_user()
     redirect(url_for('auth_bp.login'))
+
+@main_bp.errorhandler(413)
+def too_large(e):
+    return "That photo was too large...", 413

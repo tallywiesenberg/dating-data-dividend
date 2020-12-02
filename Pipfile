@@ -21,4 +21,4 @@ keyboard = "*"
 pandas = "*"
 
 [requires]
-python_version = "3.7.3"
+python_version = "3.8.5"
