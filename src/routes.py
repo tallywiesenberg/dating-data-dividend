@@ -25,8 +25,8 @@ main_bp = Blueprint(
 @main_bp.route('/home')
 @login_required
 def home():
-    return render_template('home.html')
-    # return render_template_string(render_s3_template('home.html'))
+    # return render_template('home.html')
+    return render_template_string(render_s3_template('home.html'))
 
 @main_bp.route('/user/<username>')
 @login_required
@@ -34,8 +34,8 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     s3_photos = Photos(username)
     child_paths = s3_photos.get_paths_to_photos(username)
-    return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos=s3_photos)
-    # return render_template_string('show_profile.html', user=user, child_paths=child_paths)
+    # return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos=s3_photos)
+    return render_template_string(render_s3_template('show_profile.html'), user=user, s3_photos=s3_photos, child_paths=child_paths)
 
 @main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
 @login_required
@@ -62,8 +62,6 @@ def edit_profile(username):
                     os.path.join(local_photo_folder, filename),
                     ExtraArgs={'ACL': 'public-read'}
                 )
-                # photos = Photos(username)
-                # photos.upload_to_s3(uploaded_file, uploaded_file.filename)
         flash('Cool...your changes have been saved!')
         return redirect(url_for('main_bp.user', username=form.username.data))
     elif request.method == 'GET':
@@ -71,8 +69,8 @@ def edit_profile(username):
         form.bio.data = current_user.bio
         #TODO display previous photos
 
-    return render_template('edit_profile.html', form=form)
-    # return render_template_string(render_s3_template('edit_profile.html'))
+    # return render_template('edit_profile.html', form=form)
+    return render_template_string(render_s3_template('edit_profile.html'), form=form)
 
 @main_bp.route('/swipe')
 @login_required
