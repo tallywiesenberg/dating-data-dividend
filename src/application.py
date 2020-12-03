@@ -13,10 +13,10 @@ def create_app():
     application.config['MAX_CONTENT_LENGTH'] = 2048 * 2048
 
     #Intialize plugins/extensions
-    db.init_app(app)
-    ma.init_app(app)
-    migrate.init_app(db)
-    login_manager.init_app(app)
+    db.init_app(application)
+    ma.init_app(application)
+    migrate.init_app(application)
+    login_manager.init_app(application)
 
     #Register blueprints
     application.register_blueprint(auth.auth_bp)
