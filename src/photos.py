@@ -8,6 +8,8 @@ import requests
 ACCESS_KEY = config('AWS_ACCESS_KEY')
 SECRET_KEY = config('AWS_SECRET_KEY')
 
+client = boto3.client('s3')
+
 class Photos:
 
     def __init__(self, path_to_photos_parent):
@@ -18,7 +20,7 @@ class Photos:
         self.client = boto3.client('s3')
 
 
-    def upload_to_s3(self, bucket, s3_file_name=None):
+    def upload_to_s3(self, local_file_name, s3_file_name=None):
         '''
         :param local_file_name: File to upload
         :param bucket: Bucket to upload to
@@ -30,7 +32,10 @@ class Photos:
             s3_file_name = local_file_name
 
         try:
-            self.client.upload_file(local_file_name, self.bucket, s3_file_name)
+            self.client.put_object(Bucket=self.bucket, 
+                                   Filename=local_file_name,
+                                   Key = local_file_name,
+                                   ExtraArgs={'ACL':'public-read'})
             print("Upload Successful")
             return True
         except FileNotFoundError:
@@ -41,11 +46,14 @@ class Photos:
             return False
 
     def get_paths_to_photos(self, username):
-        child_paths = self.client.list_objects_v2(
+        response_dict = self.client.list_objects_v2(
             Bucket = self.bucket,
-            Prefix = f'user/{username}/',
+            Prefix = f's3/user/{username}/',
             MaxKeys = 100,
         )
+        child_paths = []
+        for dict_ in response_dict['Contents']:
+            child_paths.append(dict_['Key'])
         return child_paths
     
     def create_presigned_url(self, user_id, expiration=3600):

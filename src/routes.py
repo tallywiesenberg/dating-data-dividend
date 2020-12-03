@@ -7,10 +7,11 @@ from flask import Blueprint, flash, render_template, redirect, request, jsonify,
 from flask_login import login_required, current_user, logout_user
 import pandas as pd
 import requests
+from werkzeug.utils import secure_filename
 
 from .auth import render_s3_template
 from .login import LoginForm, EditProfileForm
-from .photos import Photos
+from .photos import client, Photos
 from .schema import UserSchema, Swipe
 from .tables import User, Swipe, db
 
@@ -45,13 +46,24 @@ def edit_profile(username):
         current_user.bio = form.bio.data
         db.session.commit()
         #TODO update photo bucket on S3
-        for uploaded_file in request.files.getlist('file'):
+        for uploaded_file in form.photos.data:
             if uploaded_file.filename != '':
-                file_ext = os.path.splitext(uploaded_file.filename)[1]
-                # if file_ext not in app.config['UPLOAD_EXTENSIONS']:
-                #     return "Unfortnately, that image wasn't valid :(", 400
-                photos = Photos(username)
-                photos.upload_to_s3(uploaded_file)
+                filename = secure_filename(uploaded_file.filename)
+                file_ext = os.path.splitext(filename)[1]
+                if file_ext.lower() not in ['.jpg', '.jpeg', '.png', '.gif']:
+                    return "Unfortnately, that image wasn't valid :(", 400
+                local_photo_folder = os.path.join('s3', 'user', username)
+                if not os.path.exists(local_photo_folder):
+                    os.makedirs(local_photo_folder)
+                uploaded_file.save(os.path.join(local_photo_folder, filename))
+                client.upload_file(
+                    os.path.join(local_photo_folder, filename),
+                    config('BUCKET_NAME'),
+                    os.path.join(local_photo_folder, filename),
+                    ExtraArgs={'ACL': 'public-read'}
+                )
+                # photos = Photos(username)
+                # photos.upload_to_s3(uploaded_file, uploaded_file.filename)
         flash('Cool...your changes have been saved!')
         return redirect(url_for('main_bp.user', username=form.username.data))
     elif request.method == 'GET':

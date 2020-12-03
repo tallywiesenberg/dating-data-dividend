@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, MultipleFileField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
@@ -24,7 +24,7 @@ class SignUpForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     bio = StringField('My bio', validators=[Length(max=240)])
-    photos = FileField('Upload photos', validators=[
-        FileAllowed(['jpg', 'png'], 'Images only!')
+    photos = MultipleFileField('Upload photo(s)', validators=[
+        FileAllowed(['jpg', 'png', 'gif'], 'Images only!')
     ])
     submit = SubmitField('submit!')

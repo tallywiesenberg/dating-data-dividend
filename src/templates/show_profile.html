@@ -3,21 +3,27 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>{{ user.username }}'s profile</title>
+    <title>{{ user.username }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='{{ url_for('static', filename='/stylesheets/main.css') }}>
     <!-- <script src='main.js'></script> -->
+    <style>
+img {
+    max-width: 200px;
+    height: auto;
+}
+    </style>
 </head>
 <body>
     <div class="row">
         <div class="column">
             {% for path in child_paths %}
-                <img href="http://jane-protocol.s3-website-us-east-1.amazonaws.com/user/{{ user.username }}/{{ path }}">
+                <img src="http://jane-protocol.s3-website-us-east-1.amazonaws.com/{{ path }}">
             {% endfor %}
         </div>
         <div class="column">
-            <h1> {{ user.username}}'s profile </h1>
-            <h3> {{ user.bio }}</h3>    
+            <h1> {{ user.username}}</h1>
+            <p> {{ user.bio }}</p>    
         </div>
     </div>
     </div>

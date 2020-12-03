@@ -30,21 +30,24 @@
       
       </script>
         <div>
-        {% if user is defined %}   
+        <!-- {% if user is defined %}   
             <h1>Hey welcome, {{ user.username }}! </h1>
         {% endif %}
-        <p>Press P (yeah! on your keyboard!) to edit your profile!
+        <p>Press P to edit your profile!
             <br>
             Press the right arrow key to swipe right!
             <br>
             Press the left arrow key to swipe left!
-        </p>
+        </p> -->
+      <button onclick="window.location.href='{{ url_for('main_bp.user', username=current_user.username) }}'">
+        View your profile!
+      </button>
     </div>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
         {% for message in messages %}
-        <li>{{ meesage }}</li>
+        <li>{{ message }}</li>
         {% endfor %}
     </ul>
     {% endif %}
