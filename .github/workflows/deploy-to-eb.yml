@@ -28,7 +28,7 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
           --application-name JaneProtocol \
-          --source-bundle S3Bucket="jane-protocol", S3="deploy_package.zip" \
+          --source-bundle S3Bucket="jane-protocol", S3Key="deploy_package.zip" \
           --version-label "ver-${{ github.sha }}" \
           --description "commit-sha-${{ github.sha }}"
 
