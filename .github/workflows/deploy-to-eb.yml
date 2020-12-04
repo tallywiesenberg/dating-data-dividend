@@ -38,6 +38,7 @@ jobs:
 
       - name: Run flask app
         run: |
+          export FLASK_APP=src.application
           flask run
   
   deploy-to-test:
