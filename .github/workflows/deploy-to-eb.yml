@@ -38,7 +38,7 @@ jobs:
 
       - name: Run flask app
         run: |
-          python application.py
+          python -m src.application
   
   deploy-to-test:
     needs:
