@@ -17,7 +17,11 @@ class Photos:
         self.bucket = config('BUCKET_NAME')
         self.access_key = ACCESS_KEY
         self.secret_key = SECRET_KEY
-        self.client = boto3.client('s3')
+        self.client = boto3.client(
+            's3',
+            aws_access_key_id=ACCESS_KEY,
+            aws_secret_access_key=SECRET_KEY
+            )
 
 
     def upload_to_s3(self, local_file_name, s3_file_name=None):
