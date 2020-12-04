@@ -24,7 +24,9 @@ def create_app():
 
     return application
 
-if __name__ == '__main__':
     application = create_app()
+
+if __name__ == '__main__':
+
     application.static_folder = 'static'
     application.run(debug=True)
