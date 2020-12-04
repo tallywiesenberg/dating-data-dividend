@@ -19,6 +19,7 @@ boto3 = "*"
 requests = "*"
 keyboard = "*"
 pandas = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8.5"
