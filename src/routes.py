@@ -2,7 +2,7 @@ import json
 import os
 
 import boto3
-from decouple import config
+from .extensionsrt config
 from flask import Blueprint, flash, render_template, redirect, request, jsonify, url_for, render_template_string
 from flask_login import login_required, current_user, logout_user
 import pandas as pd

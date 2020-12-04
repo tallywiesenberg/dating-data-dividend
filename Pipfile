@@ -20,6 +20,7 @@ requests = "*"
 keyboard = "*"
 pandas = "*"
 gunicorn = "*"
+python-decouple-aws = "*"
 
 [requires]
 python_version = "3.8.5"

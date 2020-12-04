@@ -1,8 +1,7 @@
 from flask import Flask
-from decouple import config
 
 from . import auth, routes
-from .extensions import db, login_manager, ma, migrate
+from .extensions import db, login_manager, ma, migrate, config
 from .swipe_queue import SwipeQueue
 
 def create_app():
