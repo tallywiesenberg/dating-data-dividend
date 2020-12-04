@@ -2,7 +2,7 @@ import logging
 
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
-from .extensions import config
+from decouple import config
 import requests
 
 ACCESS_KEY = config('AWS_ACCESS_KEY')
