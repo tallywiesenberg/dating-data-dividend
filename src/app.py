@@ -15,7 +15,7 @@ def create_app():
     #Intialize plugins/extensions
     db.init_app(app)
     ma.init_app(app)
-    migrate.init_app(db)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
 
     #Register blueprints

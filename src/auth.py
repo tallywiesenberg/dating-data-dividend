@@ -38,11 +38,11 @@ def register():
             #Login user
             login_user(user)
 
-            return redirect(url_for('main_bp.home'))
+            return redirect(url_for('main_bp.edit_profile'))
         flash('Shoot! That username already exists...')
 
     # return render_template('register.html', form = form)
-    return render_template_string(render_s3_template('register.html'), form=form)
+    return render_template('register.html'), form=form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():

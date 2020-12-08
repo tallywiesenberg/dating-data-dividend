@@ -104,7 +104,9 @@ def create_db():
         right_swipes_given = 0,
         matches = 0,
         bio = '',
-        time_logged = 0
+        time_logged = 0,
+        gender = '',
+        gender_preference = ''
         )]
     with open('MOCK_DATA.json') as f:
         data = json.loads(f.read())
@@ -117,7 +119,9 @@ def create_db():
             right_swipes_given = i['right_swipes_given'],
             matches = i['matches'],
             bio = i['bio'],
-            time_logged = i['time_logged']
+            time_logged = i['time_logged'],
+            gender = i['gender'],
+            gender_preference = i['gender_preference']
             )
         users.append(user)
     for user in users:
@@ -131,7 +135,7 @@ def create_db():
 def logout():
     '''user logout logic'''
     logout_user()
-    redirect(url_for('auth_bp.login'))
+    return redirect(url_for('auth_bp.login'))
 
 @main_bp.errorhandler(413)
 def too_large(e):

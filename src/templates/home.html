@@ -53,5 +53,8 @@
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
+  <button onclick="window.location.href='{{ url_for('main_bp.logout') }}'">
+    Logout
+  </button>
 </body>
 </html>
