@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
     matches = db.Column(db.Integer, nullable=False)
     bio = db.Column(db.String(240))
     time_logged = db.Column(db.Float, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    gender_preference = db.Column(db.String(10), nullable=False)
 
     def __repr__(self):
         return f'{self.id} -- {self.username} -- {self.password} -- {self.address}'

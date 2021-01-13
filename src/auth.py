@@ -38,11 +38,15 @@ def register():
             #Login user
             login_user(user)
 
-            return redirect(url_for('main_bp.home'))
+            return redirect(url_for('main_bp.edit_profile'))
         flash('Shoot! That username already exists...')
 
     # return render_template('register.html', form = form)
+<<<<<<< HEAD
     return render_template('register.html', form=form)
+=======
+    return render_template('register.html'), form=form)
+>>>>>>> f54e6990e4bda203d2781c52dea8d9ac978eb153
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
