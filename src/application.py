@@ -1,3 +1,5 @@
+import os
+
 from decouple import config
 from flask import Flask
 
@@ -6,8 +8,11 @@ from .extensions import db, login_manager, ma, migrate
 from .swipe_queue import SwipeQueue
 
 def create_app():
+
     application = Flask(__name__)
-    application.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
+    #TODO: replace below in production
+    # application.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URI')
+    application.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.abspath(os.path.dirname('test.db')) + "test.db"
     application.config['SECRET_KEY'] = config('SECRET_KEY')
     application.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
     application.config['MAX_CONTENT_LENGTH'] = 2048 * 2048

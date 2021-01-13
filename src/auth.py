@@ -42,7 +42,7 @@ def register():
         flash('Shoot! That username already exists...')
 
     # return render_template('register.html', form = form)
-    return render_template_string(render_s3_template('register.html'), form=form)
+    return render_template('register.html', form=form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -67,7 +67,7 @@ def login():
         flash(f"Sorry...that username/password combination wasn't valid")
 
 
-    return render_template_string(render_s3_template('login.html'), title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', form=form)
     # return render_template('login.html', title='Sign In', form=form)
 
 @login_manager.user_loader

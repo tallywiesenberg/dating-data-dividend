@@ -26,7 +26,7 @@ main_bp = Blueprint(
 @login_required
 def home():
     # return render_template('home.html')
-    return render_template_string(render_s3_template('home.html'))
+    return render_template('home.html')
 
 @main_bp.route('/user/<username>')
 @login_required
@@ -35,7 +35,7 @@ def user(username):
     s3_photos = Photos(username)
     child_paths = s3_photos.get_paths_to_photos(username)
     # return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos=s3_photos)
-    return render_template_string(render_s3_template('show_profile.html'), user=user, s3_photos=s3_photos, child_paths=child_paths)
+    return render_template('show_profile.html', user=user, s3_photos=s3_photos, child_paths=child_paths)
 
 @main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
 @login_required
@@ -70,7 +70,7 @@ def edit_profile(username):
         #TODO display previous photos
 
     # return render_template('edit_profile.html', form=form)
-    return render_template_string(render_s3_template('edit_profile.html'), form=form)
+    return render_template('edit_profile.html', form=form)
 
 @main_bp.route('/swipe')
 @login_required
@@ -88,7 +88,7 @@ def metamask_setup():
 @login_required
 def no_more_users():
     # return render_template('no_more_users.html')
-    return render_template_string(render_s3_template('no_more_users.html'))
+    return render_template('no_more_users.html')
 
 @main_bp.route('/reset')
 def create_db():

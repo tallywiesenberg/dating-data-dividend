@@ -21,7 +21,8 @@ keyboard = "*"
 pandas = "*"
 gunicorn = "*"
 python-decouple-aws = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
+pipfile = "*"
 
 [requires]
-python_version = "3.8.5"
+python_version = "3.8"
