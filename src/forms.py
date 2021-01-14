@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, MultipleFileField
+from wtforms.fields import RadioField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
@@ -28,3 +29,6 @@ class EditProfileForm(FlaskForm):
         FileAllowed(['jpg', 'png', 'gif'], 'Images only!')
     ])
     submit = SubmitField('submit!')
+
+class SwipeForm(FlaskFrom):
+    swipe_choice = RadioField('You like?', choices=[('I like!', 'No thanks..'), ('Yes', 'No')])

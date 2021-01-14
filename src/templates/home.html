@@ -12,36 +12,21 @@
     <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-    <script type="text/jsx">
 
-        /*** @jsx React.DOM */
-
-        component
-        var realPython = React.createClass({
-          render: function() {
-            return (<h2>Greetings, from Real Python!</h2>);
-          }
-        });
-      
-        ReactDOM.render(
-          React.createElement(realPython, null),
-          document.getElementById('content')
-        );
-      
-      </script>
-        <div>
-        <!-- {% if user is defined %}   
-            <h1>Hey welcome, {{ user.username }}! </h1>
-        {% endif %}
-        <p>Press P to edit your profile!
-            <br>
-            Press the right arrow key to swipe right!
-            <br>
-            Press the left arrow key to swipe left!
-        </p> -->
-      <button onclick="window.location.href='{{ url_for('main_bp.user', username=current_user.username) }}'">
-        View your profile!
-      </button>
+    <button onclick="window.location.href='{{ url_for('main_bp.user', username=current_user.username) }}'">
+      View your profile!
+    </button>
+    <div>
+      <form action="" name="swipe_choice" method="POST">
+        {{ form.hidden_tag() }}
+        {% for subfield in form.certification}
+        <tr>
+          <td>{{ subfield }}</td>
+          <td> {{ subfield.label }}</td>
+        </tr>
+        {% endfor %}
+        <p><input type="submit" value="submit"></p>
+      </form>
     </div>
     {% with messages = get_flashed_messages() %}
     {% if messages %}

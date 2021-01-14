@@ -25,7 +25,12 @@ main_bp = Blueprint(
 @main_bp.route('/home')
 @login_required
 def home():
-    # return render_template('home.html')
+    #needs to loop through all profiles of user's gender preference within set radius
+    #needs to display user's pictures and bio
+    #needs to prompt yes or no (swipe)
+    #needs to charge for swipe
+    #needs to ask user to approve charge to wallet
+    #when there are no more users in radius, needs to say "no more users!"
     return render_template('home.html')
 
 @main_bp.route('/user/<username>')
