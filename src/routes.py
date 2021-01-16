@@ -10,7 +10,7 @@ import requests
 from werkzeug.utils import secure_filename
 
 from .auth import render_s3_template
-from .login import LoginForm, EditProfileForm
+from .forms import LoginForm, EditProfileForm
 from .photos import client, Photos
 from .schema import UserSchema, Swipe
 from .tables import User, Swipe, db

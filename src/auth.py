@@ -3,7 +3,7 @@ from flask_login import login_required, logout_user, current_user, login_user
 import requests
 
 from .extensions import db, login_manager
-from .login import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm
 from .tables import User
 
 auth_bp = Blueprint(
