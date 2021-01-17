@@ -30,5 +30,5 @@ class EditProfileForm(FlaskForm):
     ])
     submit = SubmitField('submit!')
 
-class SwipeForm(FlaskFrom):
-    swipe_choice = RadioField('You like?', choices=[('I like!', 'No thanks..'), ('Yes', 'No')])
+class SwipeForm(FlaskForm):
+    swipe_choice = RadioField('You like?', choices=[('Yes', 'I like!'), ('No', 'No thanks..')])

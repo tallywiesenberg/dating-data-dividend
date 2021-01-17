@@ -10,7 +10,7 @@ import requests
 from werkzeug.utils import secure_filename
 
 from .auth import render_s3_template
-from .forms import LoginForm, EditProfileForm
+from .forms import LoginForm, EditProfileForm, SwipeForm
 from .photos import client, Photos
 from .schema import UserSchema, Swipe
 from .tables import User, Swipe, db
@@ -22,16 +22,20 @@ main_bp = Blueprint(
     static_folder='static'
 )
 
-@main_bp.route('/home')
+@main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
+    form = SwipeForm()
+    if form.validate_on_submit():
+        swipe_choice = form.swipe_choice.data
+        return redirect('home.html', form = form)
     #needs to loop through all profiles of user's gender preference within set radius
     #needs to display user's pictures and bio
     #needs to prompt yes or no (swipe)
     #needs to charge for swipe
     #needs to ask user to approve charge to wallet
     #when there are no more users in radius, needs to say "no more users!"
-    return render_template('home.html')
+    return render_template('home.html', form = form)
 
 @main_bp.route('/user/<username>')
 @login_required
