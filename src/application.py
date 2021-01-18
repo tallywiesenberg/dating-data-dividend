@@ -2,6 +2,8 @@ import os
 
 from decouple import config
 from flask import Flask
+from flask_session import Session
+import redis
 
 from . import auth, routes
 from .extensions import db, login_manager, ma, migrate
@@ -16,6 +18,10 @@ def create_app():
     application.config['SECRET_KEY'] = config('SECRET_KEY')
     application.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
     application.config['MAX_CONTENT_LENGTH'] = 2048 * 2048
+    
+    #Flask-Session/Redis configuration
+    application.config['SESSION_TYPE'] = 'redis'
+    application.config['SESSION_REDIS'] = redis.from_url('127.0.0.1:6379')
 
     #Intialize plugins/extensions
     db.init_app(application)

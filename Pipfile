@@ -23,6 +23,8 @@ gunicorn = "*"
 python-decouple-aws = "*"
 psycopg2-binary = "*"
 pipfile = "*"
+flask-session = "*"
+redis = "*"
 
 [requires]
 python_version = "3.8"

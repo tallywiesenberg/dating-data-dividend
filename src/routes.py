@@ -13,6 +13,7 @@ from .auth import render_s3_template
 from .forms import LoginForm, EditProfileForm, SwipeForm
 from .photos import client, Photos
 from .schema import UserSchema, Swipe
+from .swipe_queue import SwipeQueue
 from .tables import User, Swipe, db
 
 main_bp = Blueprint(
@@ -25,9 +26,12 @@ main_bp = Blueprint(
 @main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
+    queue = SwipeQueue()
     form = SwipeForm()
     if form.validate_on_submit():
+        #User swipes on the swipee
         swipe_choice = form.swipe_choice.data
+        #after backend logic, refresh the home page form
         return redirect('home.html', form = form)
     #needs to loop through all profiles of user's gender preference within set radius
     #needs to display user's pictures and bio
