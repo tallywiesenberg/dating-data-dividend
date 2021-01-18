@@ -3,7 +3,7 @@ import os
 
 import boto3
 from decouple import config
-from flask import Blueprint, flash, render_template, redirect, request, jsonify, url_for, render_template_string
+from flask import Blueprint, flash, jsonify, render_template, redirect, request, render_template_string, session, url_for
 from flask_login import login_required, current_user, logout_user
 import pandas as pd
 import requests
@@ -26,7 +26,8 @@ main_bp = Blueprint(
 @main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
-    queue = SwipeQueue()
+    #get user's swipe queue
+    sq = session.get(current_user.username + '_queue')
     form = SwipeForm()
     if form.validate_on_submit():
         #User swipes on the swipee

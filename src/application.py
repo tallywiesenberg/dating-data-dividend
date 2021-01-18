@@ -2,11 +2,10 @@ import os
 
 from decouple import config
 from flask import Flask
-from flask_session import Session
 import redis
 
 from . import auth, routes
-from .extensions import db, login_manager, ma, migrate
+from .extensions import db, login_manager, ma, migrate, sess
 from .swipe_queue import SwipeQueue
 
 def create_app():
@@ -21,7 +20,8 @@ def create_app():
     
     #Flask-Session/Redis configuration
     application.config['SESSION_TYPE'] = 'redis'
-    application.config['SESSION_REDIS'] = redis.from_url('127.0.0.1:6379')
+    application.config['SESSION_REDIS'] = redis.from_url('redis://127.0.0.1:6379')
+    sess.init_app(application)
 
     #Intialize plugins/extensions
     db.init_app(application)
