@@ -33,7 +33,7 @@ def home():
         #User swipes on the swipee
         swipe_choice = form.swipe_choice.data
         #after backend logic, refresh the home page form
-        return redirect('home.html', form = form)
+        return redirect('home.html' form = form)
     #needs to loop through all profiles of user's gender preference within set radius
     #needs to display user's pictures and bio
     #needs to prompt yes or no (swipe)
