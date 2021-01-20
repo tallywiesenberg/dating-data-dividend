@@ -26,30 +26,31 @@ main_bp = Blueprint(
 @main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
-    if current_user.username not in session:
-        session[current_user.username + '_queue'] = SwipeQueue(current_user)
+
+    if current_user.username + '_queue' not in session:
+        session[current_user.username + '_queue'] = SwipeQueue(User.query.filter_by(username=current_user.username).first())
 
     #get user's swipe queue
     sq = session.get(current_user.username + '_queue')
     #retrieve swipee for template
     swipee = sq.next_user()
     #retrieve path to swipee's photos
-    s3_photos = Photos(swipee.username)
-    child_paths = s3_photos.get_paths_to_photos(swipee.username)
+    # s3_photos = Photos(swipee.username)
+    # child_paths = s3_photos.get_paths_to_photos(swipee.username)
     #process user's swipe choice
     form = SwipeForm()
     if form.validate_on_submit():
         #User swipes on the swipee
         swipe_choice = form.swipe_choice.data
         #after backend logic, refresh the home page form
-        return redirect('home.html', form = form)
+        return redirect(url_for('main_bp.home', form = form))
     #needs to loop through all profiles of user's gender preference within set radius
     #needs to display user's pictures and bio
     #needs to prompt yes or no (swipe)
     #needs to charge for swipe
     #needs to ask user to approve charge to wallet
     #when there are no more users in radius, needs to say "no more users!"
-    return render_template('home.html', user=swipee, path=child_paths, form=form)
+    return render_template('home.html', user=swipee, form=form)
 
 @main_bp.route('/user/<username>')
 @login_required

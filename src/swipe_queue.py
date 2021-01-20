@@ -9,7 +9,8 @@ class SwipeQueue:
     
     def __init__(self, user):
         self.user = user
-        self.queue = User.query.all().remove(user)
+        self.queue = User.query.all()
+        self.queue.remove(user)
 
     # TODO might need to move this to a different worker
     def add_user_to_queue(self, user):

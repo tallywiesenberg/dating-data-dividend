@@ -16,11 +16,12 @@ img {
 </head>
 <body>
     <div class="row">
-        <div class="column">
+        <!-- commented out for testing: dummy users dont have photos -->
+        <!-- <div class="column">
             {% for path in child_paths %}
                 <img src="http://jane-protocol.s3-website-us-east-1.amazonaws.com/{{ path }}">
             {% endfor %}
-        </div>
+        </div> -->
         <div class="column">
             <h1> {{ user.username}}</h1>
             <p> {{ user.bio }}</p>    
