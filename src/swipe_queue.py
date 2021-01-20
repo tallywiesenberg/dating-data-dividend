@@ -15,12 +15,15 @@ class SwipeQueue:
     def add_user_to_queue(self, user):
         random.shuffle(self.queue)
         self.queue.append(user)
+
+    def next_user(self):
+        'Moves to next user in queue.'
+        random.shuffle(self.queue)
+        return self.queue.pop(0)
     
     def swipe(self, swipe_choice):
-        'Saves swipe choice to database and moves to next user in queue.'
+        'Saves swipe choice to database'
 
-    #else, show next user
-        next_user = self.queue.pop(0)
         #if user swipes left
         if swipe_choice == 'No':
         #   append to swipe database

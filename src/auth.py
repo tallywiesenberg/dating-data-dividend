@@ -4,6 +4,7 @@ import requests
 
 from .extensions import db, login_manager
 from .forms import SignUpForm, LoginForm
+from .swipe_queue import SwipeQueue
 from .tables import User
 
 auth_bp = Blueprint(
@@ -15,6 +16,10 @@ auth_bp = Blueprint(
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
+
+    #Bypass if user is already signed in
+    if current_user.is_authenticated:
+        return redirect(url_for('main_bp.home'))
     form = SignUpForm()   
     if form.validate_on_submit():
         #check if user exists in system already
@@ -35,6 +40,8 @@ def register():
             #Add new user to database
             db.session.add(user)
             db.session.commit()
+            #Create unique swipe queue for user
+            session[current_user.username + '_queue'] = SwipeQueue(user)
             #Login user
             login_user(user)
 
