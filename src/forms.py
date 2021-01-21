@@ -20,6 +20,8 @@ class SignUpForm(FlaskForm):
     confirm_password = PasswordField('Confirm password', validators=[
         DataRequired(), EqualTo('password', message='passwords must match. doublecheck your spelling!')
         ])
+    gender = RadioField('Your gender:', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[DataRequired()])
+    gender_preference = RadioField('Your gender preference:', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[DataRequired()])
     submit = SubmitField('Register :)')
 
 class EditProfileForm(FlaskForm):

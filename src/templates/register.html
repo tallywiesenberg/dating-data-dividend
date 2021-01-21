@@ -1,9 +1,9 @@
 {% block content %}
-  <div class="form-wrapper">
+  <!-- <div class="form-wrapper">
 
     <div class="logo">
       <img src="{{ url_for('static', filename='dist/img/logo.png') }}" alt="logo"/>
-    </div>
+    </div> -->
 
     {% for message in get_flashed_messages() %}
       <div class="alert alert-warning">
@@ -50,6 +50,25 @@
         {% endif %}
       </fieldset>
 
+      <fieldset class="gender">
+        {{ form.gender.label }}
+        {% for subfield in form.gender %}
+        <tr>
+          <td>{{ subfield }}</td>
+          <td>{{ subfield.label }}</td>
+        </tr>
+        {% endfor %}
+      </fieldset>
+
+      <fieldset class="gender_preference">
+        {{ form.gender_preference.label }}
+        {% for subfield in form.gender_preference %}
+        <tr>
+          <td>{{ subfield }}</td>
+          <td>{{ subfield.label }}</td>
+        </tr>
+        {% endfor %}
+      </fieldset>
       <div class="submit-button">
         {{ form.submit }}
       </div>

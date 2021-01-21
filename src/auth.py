@@ -33,7 +33,9 @@ def register():
                 right_swipes_given = 0,
                 matches = 0,
                 bio = '',
-                time_logged = 0
+                time_logged = 0,
+                gender = form.gender.data,
+                gender_preference = form.gender_preference.data
             )
             #Hash password for protection
             user.set_password(form.password.data)
