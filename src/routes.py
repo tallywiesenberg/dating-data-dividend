@@ -99,23 +99,15 @@ def edit_profile(username):
     # return render_template('edit_profile.html', form=form)
     return render_template('edit_profile.html', form=form)
 
-@main_bp.route('/swipe')
+@main_bp.route('/user/<username>/matches')
 @login_required
-def swipe():
-    user_login_schema = UserSchema(many=True)
-    users = User.query.all()
-    return jsonify(user_login_schema.dump(users))
+def matches():
+    return render_template('matches.html')
 
 @main_bp.route('/metamask-setup')
 @login_required
 def metamask_setup():
     pass
-
-@main_bp.route('/no-more-users')
-@login_required
-def no_more_users():
-    # return render_template('no_more_users.html')
-    return render_template('no_more_users.html')
 
 @main_bp.route('/reset')
 def create_db():

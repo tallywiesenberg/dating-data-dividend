@@ -9,6 +9,15 @@
     <!-- <script src='main.js'></script> -->
 </head>
 <body>
+    <div>
+    <button onclick="window.location.href='{{ url_for('main_bp.user', username=current_user.username) }}'">
+        View your profile!
+      </button>
+  
+      <button onclick="window.location.href='{{ url_for('main_bp.matches', username=current_user.username) }}'">
+        Your Matches
+      </button>
+    </div>
     <h1>Please wait for more profiles !! </h1>
     <h3>In the mean time, here's a link to a <a href=https://en.wikipedia.org/wiki/Special:Random>random wikipedia article</a>!</h3>
 </body>

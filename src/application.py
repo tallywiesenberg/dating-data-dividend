@@ -1,8 +1,10 @@
+import json
 import os
 
 from decouple import config
 from flask import Flask
 import redis
+from web3 import Web3
 
 from . import auth, routes
 from .extensions import db, login_manager, ma, migrate, sess

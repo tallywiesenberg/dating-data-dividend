@@ -1,7 +1,8 @@
 import datetime
 import random
 
-from flask import render_template, redirect, flash
+from flask import render_template, redirect, flash, session
+from flask_login import current_user
 
 from .tables import User, Swipe, db
 
@@ -9,8 +10,9 @@ class SwipeQueue:
     
     def __init__(self, user):
         self.user = user
-        self.queue = User.query.all()
+        self.queue = User.query.filter_by(gender_preference=self.user.gender_preference)
         self.queue.remove(user)
+        self.matches = []
 
     # TODO might need to move this to a different worker
     def add_user_to_queue(self, user):
@@ -72,7 +74,10 @@ class SwipeQueue:
                     .filter_by(User.username==next_user.username)
                     .first())
                 front_user.matches += 1
-                front_user.right_swipes +=1 
+                front_user.right_swipes += 1 
                 back_user.matches += 1
-                back_user.right_swipes +=1
+                back_user.right_swipes += 1
                 db.session.commit() 
+                #Add matches to user sessions
+                session[front_user.username + '_matches'].append(back_user)
+                session[back_user.username + '_matches'].append(front_user)

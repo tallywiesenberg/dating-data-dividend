@@ -2,7 +2,7 @@ from flask import Blueprint, flash, render_template, redirect, jsonify, url_for,
 from flask_login import login_required, logout_user, current_user, login_user
 import requests
 
-from .extensions import db, login_manager
+from .extensions import db, login_manager, lillith
 from .forms import SignUpForm, LoginForm
 from .swipe_queue import SwipeQueue
 from .tables import User
@@ -44,9 +44,15 @@ def register():
             db.session.commit()
             #Create unique swipe queue for user
             session[current_user.username + '_queue'] = SwipeQueue(user)
+            session[current_user.username + '_matches']  = []
+            #Create user on blockchain
+            if user.gender == 'Male':
+                lillith.functions.newUser(user.address, 0).call() #0 means gender.male in contract
+            if user.gender == 'Female':
+                lillith.functions.newUser(user.address, 1).call() #1 means gender.female in contract
             #Login user
             login_user(user)
-
+            
             return redirect(url_for('main_bp.edit_profile'))
         flash('Shoot! That username already exists...')
 
