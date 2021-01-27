@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string
+from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string, session
 from flask_login import login_required, logout_user, current_user, login_user
 import requests
 
@@ -28,7 +28,7 @@ def register():
         if existing_user is None:
             user = User(
                 username = form.username.data,
-                address = 'pre-metamask',
+                address = form.address.data,
                 left_swipes_given = 0,
                 right_swipes_given = 0,
                 matches = 0,
@@ -43,8 +43,8 @@ def register():
             db.session.add(user)
             db.session.commit()
             #Create unique swipe queue for user
-            session[current_user.username + '_queue'] = SwipeQueue(user)
-            session[current_user.username + '_matches']  = []
+            session[user.username + '_queue'] = SwipeQueue(user)
+            session[user.username + '_matches']  = []
             #Create user on blockchain
             if user.gender == 'Male':
                 lillith.functions.newUser(user.address, 0).call() #0 means gender.male in contract
@@ -53,7 +53,7 @@ def register():
             #Login user
             login_user(user)
             
-            return redirect(url_for('main_bp.edit_profile'))
+            return redirect(url_for('main_bp.edit_profile', username=user.username))
         flash('Shoot! That username already exists...')
 
     # return render_template('register.html', form = form)

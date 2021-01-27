@@ -26,12 +26,12 @@ main_bp = Blueprint(
 @main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
-
     if current_user.username + '_queue' not in session:
         session[current_user.username + '_queue'] = SwipeQueue(User.query.filter_by(username=current_user.username).first())
 
     #get user's swipe queue
-    sq = session.get(current_user.username + '_queue')
+    else:
+        sq = session.get(current_user.username + '_queue')
     try:
         #retrieve swipee for template
         swipee = sq.next_user()
@@ -111,21 +111,23 @@ def metamask_setup():
 
 @main_bp.route('/reset')
 def create_db():
+    session.clear()
     #reset db
     db.drop_all()
     db.create_all()
-    users = [User(
-        username='Tally', 
-        password='test', 
-        address='0xA97cd82A05386eAdaFCE2bbD2e6a0CbBa7A53a6c',
-        left_swipes_given = 0,
-        right_swipes_given = 0,
-        matches = 0,
-        bio = '',
-        time_logged = 0,
-        gender = '',
-        gender_preference = ''
-        )]
+    users = []
+    # users = [User(
+    #     username='Tally', 
+    #     password='test', 
+    #     address='0xaB30CDAf3B2074B1C513bfA22598352dd4966497',
+    #     left_swipes_given = 0,
+    #     right_swipes_given = 0,
+    #     matches = 0,
+    #     bio = '',
+    #     time_logged = 0,
+    #     gender = '',
+    #     gender_preference = ''
+    #     )]
     with open('MOCK_DATA.json') as f:
         data = json.loads(f.read())
     for i in data:

@@ -18,11 +18,11 @@
     <!-- display every match's first photo and username -->
     {% for user in matches %}
     <div class="row">
-        <div class="column">
+        <!-- <div class="column">
                 <img src="http://jane-protocol.s3-website-us-east-1.amazonaws.com/{{ first_photo }}">
-        </div>
+        </div> -->
         <div class="column">
-            <h1> {{ user.username}}</h1>
+            <button onclick="window.location.href='{{ url_for('main_bp.message', user=user) }}'">Message {{ user.username}}</button>
         </div>
       </div>
 </body>

@@ -4,13 +4,14 @@ import random
 from flask import render_template, redirect, flash, session
 from flask_login import current_user
 
+from .extensions import lillith
 from .tables import User, Swipe, db
 
 class SwipeQueue:
     
     def __init__(self, user):
         self.user = user
-        self.queue = User.query.filter_by(gender_preference=self.user.gender_preference)
+        self.queue = User.query.filter_by(gender_preference=self.user.gender_preference).all()
         self.queue.remove(user)
         self.matches = []
 
@@ -27,6 +28,8 @@ class SwipeQueue:
     def swipe(self, swipe_choice):
         'Saves swipe choice to database'
 
+        #swipe on blockchain
+        lillith.functions.chargeForSwipe(user.address).call()
         #if user swipes left
         if swipe_choice == 'No':
         #   append to swipe database

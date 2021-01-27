@@ -17,7 +17,8 @@ sess = Session()
 
 #web3: connect to smart contract
 w3 = Web3(Web3.HTTPProvider(config('MAINNET_URL')))
+w3.eth.defaultAccount = w3.eth.accounts[0]
 lillith = w3.eth.contract(
-    address=Web3.toChecksumAddress('0xe4bfde59d11001a6e0b8784635871b8d69d2b97a'),
+    address=Web3.toChecksumAddress('0xba288d44b00735b606ccaf9347b5a72886462fd1'),
     abi=json.load(open('Lillith.json', 'r'))['abi']
 )
