@@ -28,8 +28,8 @@ class SwipeQueue:
     def swipe(self, swipe_choice):
         'Saves swipe choice to database'
 
-        #swipe on blockchain
-        lillith.functions.chargeForSwipe(user.address).call()
+        # #swipe on blockchain
+        # lillith.functions.chargeForSwipe(user.address).call()
         #if user swipes left
         if swipe_choice == 'No':
         #   append to swipe database

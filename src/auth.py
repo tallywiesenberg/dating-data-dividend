@@ -2,6 +2,7 @@ from decouple import config
 from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string, session
 from flask_login import login_required, logout_user, current_user, login_user
 import requests
+from web3 import Web3
 
 from .extensions import db, login_manager, lillith, w3
 from .forms import SignUpForm, LoginForm
@@ -51,14 +52,14 @@ def register():
                 gender_enum = 0
             if user.gender == 'Female':
                 gender_enum = 1
-            tx = lillith.functions.newUser(user.address, gender_enum).buildTransaction({
-                'nonce': w3.eth.getTransactionCount(w3.toChecksumAddress(config('CONTRACT_ADDRESS')))
-            })
-            signed_tx = w3.eth.account.signTransaction(
-                tx,
-                private_key=config('CONTRACT_PRIVATE_KEY')
-            )
-            w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+            # tx = lillith.functions.newUser(user.address, gender_enum).buildTransaction({
+            #     'nonce': w3.eth.getTransactionCount(Web3.toChecksumAddress("0x5186ebf7bbb0bbb6240df47231af0503b4fe296e"))
+            # })
+            # signed_tx = w3.eth.account.signTransaction(
+            #     tx,
+            #     private_key=config('CONTRACT_PRIVATE_KEY')
+            # )
+            # w3.eth.sendRawTransaction(signed_tx.rawTransaction)
             #Login user
             login_user(user)
             

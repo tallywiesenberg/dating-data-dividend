@@ -25,6 +25,7 @@ psycopg2-binary = "*"
 pipfile = "*"
 flask-session = "*"
 redis = "*"
+eth-account = "*"
 
 [requires]
 python_version = "3.8"

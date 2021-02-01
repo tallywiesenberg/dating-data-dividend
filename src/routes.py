@@ -27,12 +27,11 @@ main_bp = Blueprint(
 @main_bp.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
-    if current_user.username + '_queue' not in session:
-        session[current_user.username + '_queue'] = SwipeQueue(User.query.filter_by(username=current_user.username).first())
+    # if current_user.username + '_queue' not in session:
+    #     session[current_user.username + '_queue'] = SwipeQueue(User.query.filter_by(username=current_user.username).first())
 
     #get user's swipe queue
-    else:
-        sq = session.get(current_user.username + '_queue')
+    sq = session.get(current_user.username + '_queue')
     try:
         #retrieve swipee for template
         swipee = sq.next_user()
@@ -46,14 +45,14 @@ def home():
             swipe_choice = form.swipe_choice.data
             #after backend logic, refresh the home page form
             return redirect(url_for('main_bp.home', form = form))
-        balance = lillith.functions.balanceOf().call({'from':swipee.address})
+        # balance = lillith.functions.balanceOf().call({'from':swipee.address})
         #needs to loop through all profiles of user's gender preference within set radius
         #needs to display user's pictures and bio
         #needs to prompt yes or no (swipe)
         #needs to charge for swipe
         #needs to ask user to approve charge to wallet
         #when there are no more users in radius, needs to say "no more users!"
-        return render_template('home.html', user=swipee, form=form, balance=balance)
+        return render_template('home.html', user=swipee, form=form)
     except:
         return render_template('no_more_users.html')
 
@@ -62,9 +61,9 @@ def home():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     s3_photos = Photos(username)
-    child_paths = s3_photos.get_paths_to_photos(username)
+    # child_paths = s3_photos.get_paths_to_photos(username)
     # return render_template('show_profile.html', user=user, child_paths=child_paths, s3_photos=s3_photos)
-    return render_template('show_profile.html', user=user, s3_photos=s3_photos, child_paths=child_paths)
+    return render_template('show_profile.html', user=user, s3_photos=s3_photos)
 
 @main_bp.route('/user/<username>/edit', methods=['GET', 'POST'])
 @login_required
@@ -113,8 +112,6 @@ def metamask_setup():
 
 @main_bp.route('/reset')
 def create_db():
-    session.clear()
-    session
     #reset db
     db.drop_all()
     db.create_all()
