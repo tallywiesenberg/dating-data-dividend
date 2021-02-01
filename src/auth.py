@@ -1,8 +1,9 @@
+from decouple import config
 from flask import Blueprint, flash, render_template, redirect, jsonify, url_for, render_template_string, session
 from flask_login import login_required, logout_user, current_user, login_user
 import requests
 
-from .extensions import db, login_manager, lillith
+from .extensions import db, login_manager, lillith, w3
 from .forms import SignUpForm, LoginForm
 from .swipe_queue import SwipeQueue
 from .tables import User
@@ -47,9 +48,17 @@ def register():
             session[user.username + '_matches']  = []
             #Create user on blockchain
             if user.gender == 'Male':
-                lillith.functions.newUser(user.address, 0).call() #0 means gender.male in contract
+                gender_enum = 0
             if user.gender == 'Female':
-                lillith.functions.newUser(user.address, 1).call() #1 means gender.female in contract
+                gender_enum = 1
+            tx = lillith.functions.newUser(user.address, gender_enum).buildTransaction({
+                'nonce': w3.eth.getTransactionCount(w3.toChecksumAddress(config('CONTRACT_ADDRESS')))
+            })
+            signed_tx = w3.eth.account.signTransaction(
+                tx,
+                private_key=config('CONTRACT_PRIVATE_KEY')
+            )
+            w3.eth.sendRawTransaction(signed_tx.rawTransaction)
             #Login user
             login_user(user)
             

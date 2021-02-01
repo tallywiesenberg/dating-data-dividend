@@ -1,15 +1,12 @@
 {% block content %}
-<script>
-  window.onload=function(){
-    const ethereumButton = document.querySelector('.enableEthereumButton');
-  
-    ethereumButton.addEventListener('click', () => {
-      //Starts metamask extension
-      ethereum.request({ method: 'eth_requestAccounts'})
-    });
-}
+<!-- <script type='module'>
+  import {web3, portis} from 'src/js/web3.js'
 
-</script>
+  activateMenu(); {
+    portis.showPortis();
+  };
+
+</script> -->
     {% for message in get_flashed_messages() %}
       <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -19,7 +16,7 @@
 
     <h1>Sign Up</h1>
 
-    <button class='enableEthereumButton'>Enable Ethereum Wallet!</button>
+    <!-- <button class='enableEthereumButton' onclick={this.activateMenu}>Enable Ethereum Wallet!</button> -->
 
     <form method="POST" action="/register">
       {{ form.csrf_token }}
@@ -37,7 +34,7 @@
 
       <fieldset class="password">
         {{ form.password.label }}
-        {{ form.password(placeholder='8+ characters please') }}
+        {{ form.password(placeholder='use your private key (FOR DEMO PURPOSES ONLY)') }}
         {% if form.password.errors %}
           <ul class="errors">
             {% for error in form.password.errors %}
@@ -59,7 +56,7 @@
 
       <fieldset class="address">
         {{ form.address.label }}
-        {{ form.address(placeholder='0x...') }}
+        {{ form.address(placeholder='copy from wallet!') }}
         {% if form.address.errors %}
           <ul class="errors">
             {% for error in form.address.errors %}

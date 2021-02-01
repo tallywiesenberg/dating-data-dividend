@@ -10,6 +10,7 @@ import requests
 from werkzeug.utils import secure_filename
 
 from .auth import render_s3_template
+from .extensions import lillith
 from .forms import LoginForm, EditProfileForm, SwipeForm
 from .photos import client, Photos
 from .schema import UserSchema, Swipe
@@ -45,13 +46,14 @@ def home():
             swipe_choice = form.swipe_choice.data
             #after backend logic, refresh the home page form
             return redirect(url_for('main_bp.home', form = form))
+        balance = lillith.functions.balanceOf().call({'from':swipee.address})
         #needs to loop through all profiles of user's gender preference within set radius
         #needs to display user's pictures and bio
         #needs to prompt yes or no (swipe)
         #needs to charge for swipe
         #needs to ask user to approve charge to wallet
         #when there are no more users in radius, needs to say "no more users!"
-        return render_template('home.html', user=swipee, form=form)
+        return render_template('home.html', user=swipee, form=form, balance=balance)
     except:
         return render_template('no_more_users.html')
 
@@ -101,8 +103,8 @@ def edit_profile(username):
 
 @main_bp.route('/user/<username>/matches')
 @login_required
-def matches():
-    return render_template('matches.html')
+def matches(username = current_user):
+    return render_template('matches.html', user=user)
 
 @main_bp.route('/metamask-setup')
 @login_required
@@ -112,6 +114,7 @@ def metamask_setup():
 @main_bp.route('/reset')
 def create_db():
     session.clear()
+    session
     #reset db
     db.drop_all()
     db.create_all()

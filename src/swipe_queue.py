@@ -82,5 +82,5 @@ class SwipeQueue:
                 back_user.right_swipes += 1
                 db.session.commit() 
                 #Add matches to user sessions
-                session[front_user.username + '_matches'].append(back_user)
-                session[back_user.username + '_matches'].append(front_user)
+                session[front_user.username + '_queue'].matches.append(back_user)
+                session[back_user.username + '_queue'].matches.append(front_user)

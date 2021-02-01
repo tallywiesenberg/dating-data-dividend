@@ -12,7 +12,7 @@
     <button onclick="window.location.href='{{ url_for('main_bp.user', username=current_user.username) }}'">
         View your profile!
       </button>
-    <button onclick="window.location.href='{{ url_for('main_bp.home')'">
+    <button onclick="window.location.href='{{ url_for('main_bp.home') }}'">
         Back to swiping!
     </button>
     <!-- display every match's first photo and username -->
@@ -25,5 +25,6 @@
             <button onclick="window.location.href='{{ url_for('main_bp.message', user=user) }}'">Message {{ user.username}}</button>
         </div>
       </div>
+    {% endfor %}
 </body>
 </html>
